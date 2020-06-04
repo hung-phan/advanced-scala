@@ -80,4 +80,14 @@ object LazyEvaluationStream extends App {
   println(naturals.head)
   println(naturals.tail.head)
   println(naturals.tail.tail.head)
+
+  def eratosthense(numbers: MyStream[Int]): MyStream[Int] =
+    if (numbers.isEmpty) numbers
+    else
+      new Cons(
+        numbers.head,
+        eratosthense(numbers.tail.filter(_ % numbers.head != 0))
+      )
+
+  eratosthense(MyStream.from(2)(_ + 1)).take(100).foreach(println)
 }
