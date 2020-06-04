@@ -9,7 +9,7 @@ object LazyEvaluationStream extends App {
     def tail: MyStream[A]
 
     def #::[B >: A](element: B): MyStream[B]
-    def ++[B >: A](anotherStream: MyStream[B]): MyStream[B]
+    def ++[B >: A](anotherStream: => MyStream[B]): MyStream[B]
 
     def foreach(f: A => Unit): Unit
     def map[B](f: A => B): MyStream[B]
@@ -33,7 +33,7 @@ object LazyEvaluationStream extends App {
 
     override def #::[B >: Nothing](element: B): MyStream[B] =
       new Cons[B](element, this)
-    override def ++[B >: Nothing](anotherStream: MyStream[B]): MyStream[B] =
+    override def ++[B >: Nothing](anotherStream: => MyStream[B]): MyStream[B] =
       anotherStream
 
     override def foreach(f: Nothing => Unit): Unit = {}
@@ -50,7 +50,7 @@ object LazyEvaluationStream extends App {
     override lazy val tail: MyStream[A] = tl
 
     override def #::[B >: A](element: B): MyStream[B] = new Cons(element, this)
-    override def ++[B >: A](anotherStream: MyStream[B]): MyStream[B] =
+    override def ++[B >: A](anotherStream: => MyStream[B]): MyStream[B] =
       new Cons(head, tail ++ anotherStream)
 
     override def foreach(f: A => Unit): Unit = {
