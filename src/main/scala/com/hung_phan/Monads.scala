@@ -10,7 +10,7 @@ object Monads extends App {
       try {
         Success(a)
       } catch {
-        case e => Fail(e)
+        case e: Throwable => Fail(e)
       }
   }
 
@@ -19,7 +19,7 @@ object Monads extends App {
       try {
         f(value)
       } catch {
-        case e => Fail(e)
+        case e: Throwable => Fail(e)
       }
   }
 
@@ -47,9 +47,7 @@ object Monads extends App {
 
     def map[B](f: (=> A) => B): Lazy[B] = Lazy(f(value))
 
-    def flatten[B](m: Lazy[Lazy[B]]): Lazy[B] = m.flatMap { (x: Lazy[B]) =>
-      x
-    }
+    def flatten[B](m: Lazy[Lazy[B]]): Lazy[B] = m.flatMap { x => x }
   }
 
   object Lazy {
