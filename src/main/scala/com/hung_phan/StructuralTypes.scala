@@ -1,6 +1,6 @@
 package com.hung_phan
 
-object StructuralTypes {
+object StructuralTypes extends App {
   // structural types
   type JavaClosable = java.io.Closeable
 
